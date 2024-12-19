@@ -1,17 +1,17 @@
 import BoardItem from './BoardItem';
 
+interface BoardItemData {
+  id: number;
+  title: string;
+  writer: {
+    name: string;
+  };
+  likeCount: number;
+  updatedAt: string;
+}
+
 interface BoardListProps {
-  data: [
-    {
-      id: number;
-      title: string;
-      writer: {
-        name: string;
-      };
-      likeCount: number;
-      updatedAt: string;
-    },
-  ];
+  data: BoardItemData[];
 }
 
 /**
@@ -21,7 +21,7 @@ interface BoardListProps {
  */
 export default function BoardList({ data }: BoardListProps) {
   const tableStyles =
-    'grid grid-cols-[50px_2fr_100px_100px_150px] py-[11px] mo:py-[14px] border-b items-center text-16 pc:px-[50px] ta:px-[20px]';
+    'grid grid-cols-[50px_2fr_120px_120px_130px] ta:grid-cols-[50px 2fr 70px 100px 110px] py-[11px] mo:py-[14px] border-b items-center text-16 pc:px-[30px] ta:px-[10px]';
 
   return (
     <div className="w-full text-center mo:text-left">

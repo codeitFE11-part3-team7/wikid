@@ -101,7 +101,7 @@ export default function Button({
     ? 'cursor-default bg-gray-300 pointer-events-none'
     : '';
   // 공통 클래스
-  const classNames = `inline-flex items-center justify-center gap-[10px] transition-colors disabled:bg-gray-300 disabled:pointer-events-none ${sizeClass[size]} ${variantClass[variant]} ${className}`;
+  const classNames = `inline-flex items-center text-nowrap justify-center gap-[10px] transition-colors disabled:bg-gray-300 disabled:pointer-events-none ${sizeClass[size]} ${variantClass[variant]} ${className}`;
 
   return (
     <>

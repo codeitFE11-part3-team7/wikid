@@ -74,6 +74,8 @@ export default function Login({
           src={profileImage || '/icon/icon-profile.svg'}
           className="mo:hidden"
           alt="프로필 아이콘"
+          width={32}
+          height={32}
         />
         <Image
           src="/icon/icon-menu.svg"
@@ -111,6 +113,8 @@ export default function Login({
       </button>
     </div>
   ) : (
-    <button onClick={login}>로그인</button>
+    <button onClick={login} className="text-14 text-gray-400">
+      로그인
+    </button>
   );
 }

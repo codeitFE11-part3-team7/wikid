@@ -2,10 +2,11 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 interface SearchInputProps {
-  size: 'large' | 'medium';
+  size: 'large' | 'medium' | 'full';
   value?: string;
   onSubmit?: (value: string) => void;
   onChange: (value: string) => void;
+  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
 }
 
@@ -15,6 +16,7 @@ function SearchInput({
   value = '',
   onSubmit = () => {},
   placeholder = '검색어를 입력해 주세요',
+  onKeyPress,
 }: SearchInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -26,6 +28,10 @@ function SearchInput({
     },
     medium: {
       container: 'w-[800px] h-[40px] ',
+      padding: 'p-[20px] pl-[15px]',
+    },
+    full: {
+      container: 'w-full h-[40px] ',
       padding: 'p-[20px] pl-[15px]',
     },
   };
@@ -70,6 +76,7 @@ function SearchInput({
         value={value}
         placeholder={placeholder}
         onChange={handleInputChange}
+        onKeyPress={onKeyPress}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
