@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import DisconnectionModal from '@/components/DisconnectionModal';
-import ImageUploadModal from '@/components/ImageUploadModal';
-import UnsavedChangesModal from '@/components/UnsavedChangesModal';
-import WikiQuizModal from '@/components/WikiQuizModal';
+import DisconnectionModal from '@/components/Modal/DisconnectionModal';
+import ImageUploadModal from '@/components/Modal/ImageUploadModal';
+import UnsavedChangesModal from '@/components/Modal/UnsavedChangesModal';
+import WikiQuizModal from '@/components/Modal/WikiQuizModal';
 
 const QUESTION = '특별히 싫어하는 음식은?';
 const ANSWER = '카레';
@@ -24,7 +24,7 @@ function ModalTest() {
   };
 
   return (
-    <div className="flex size-full flex-col items-center justify-center pt-40">
+    <div className="flex size-full flex-col items-center justify-center pt-48">
       <button
         onClick={() => setIsDMOpen(true)}
         className="rounded-custom bg-green-200 px-6 py-2 text-background"

@@ -7,7 +7,7 @@ interface DisconnectionModalProps {
 
 const DisconnectionModal = ({ isOpen, onClose }: DisconnectionModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal closeOnBackgroundClick={true} isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-2">
         <p className="text-lg font-bold">
           5분 이상 글을 쓰지 않아 접속이 끊어졌어요.

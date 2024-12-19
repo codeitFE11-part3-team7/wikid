@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
+import Button from '../Button';
 import Modal from './Modal';
 
 interface ImageUploadModalProps {
@@ -41,33 +42,26 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
     }
   };
 
-  // 엔터 또는 스페이스 키 입력시 카메라 클릭 이벤트 발생(포커스되어있을 때)
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      handleCameraClick();
-    }
-  };
-
   // 드래그 관련 이벤트
   // 드래그 시작
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragEnter = (e: React.DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation(); // 이벤트 전파 중지
     setIsDragging(true);
   };
   // 드래그가 영역을 벗어날 때
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
   // 드래그 중
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
   // 드래그로 파일을 드랍했을 때
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: React.DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
@@ -82,7 +76,7 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
   const handleImageUpload = async () => {
     try {
       setIsUpload(true);
-      // 이미지 업로그 api 통신 로직
+      // 이미지 업로드 api 통신 로직
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsUpload(false);
       alert('이미지 업로드 성공');
@@ -115,6 +109,7 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
           onChange={handleFileChange}
           accept="image/*"
           className="hidden"
+          aria-label="파일 선택"
         />
 
         {previewUrl ? (
@@ -127,10 +122,8 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
             />
           </div>
         ) : (
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
+          <button
+            type="button"
             onClick={handleCameraClick}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -141,9 +134,10 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
                 ? 'border-green-400 bg-green-50'
                 : 'border-gray-300 bg-gray-100 hover:border-gray-400'
             }`}
+            aria-label="이미지 업로드"
           >
             <Image
-              src="/icon/icon-camera.png"
+              src="/icon/icon-camera.svg"
               alt="카메라 아이콘"
               width={40}
               height={40}
@@ -151,46 +145,18 @@ const ImageUploadModal = ({ isOpen, onClose }: ImageUploadModalProps) => {
             <p className="text-sm text-gray-500">
               클릭 또는 이미지를 드래그하여 올려주세요
             </p>
-          </div>
+          </button>
         )}
         <div className="flex justify-end">
-          <button
-            className={`w-40 rounded-custom px-6 py-2 text-background ${
-              previewUrl
-                ? 'cursor-pointer bg-green-200'
-                : 'cursor-not-allowed bg-gray-300'
-            }`}
-            disabled={!previewUrl || isUpload}
+          <Button
+            type="button"
+            disabled={!previewUrl}
+            isLoading={isUpload}
             onClick={handleImageUpload}
+            className="w-40"
           >
-            {isUpload ? (
-              <div className="flex items-center justify-center">
-                <span className="mr-2">확인 중</span>
-                <svg
-                  className="size-5 animate-spin"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-              </div>
-            ) : (
-              '삽입하기'
-            )}
-          </button>
+            삽입하기
+          </Button>
         </div>
       </div>
     </Modal>

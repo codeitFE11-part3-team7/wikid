@@ -7,7 +7,7 @@ interface UnsavedChangesModalProps {
 
 const UnsavedChangesModal = ({ isOpen, onClose }: UnsavedChangesModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} closeOnBackgroundClick={true}>
       <div className="flex flex-col gap-2">
         <p className="text-lg font-bold">저장하지 않고 나가시겠어요?</p>
         <p className="text-sm">작성하신 모든 내용이 사라집니다.</p>
