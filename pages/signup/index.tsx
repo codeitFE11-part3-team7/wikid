@@ -4,18 +4,20 @@ import { useState } from 'react';
 
 import Button from '@/components/Button';
 import InputField from '@/components/Input';
+import { AuthAPI } from '@/services/api/auth';
 
-function SignUp(): React.ReactElement {
+function SignUp() {
+  const [errorMessage, setErrorMessage] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState('');
   const [validFields, setValidFields] = useState({
-    name: false,
-    email: false,
-    password: false,
-    passwordConfirm: false,
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
   });
   const router = useRouter();
 
@@ -49,16 +51,26 @@ function SignUp(): React.ReactElement {
     if (isSubmitting || !isFormValid) return;
 
     setIsSubmitting(true);
+
     try {
-      console.log('Form submitted:', {
+      await AuthAPI.signup({
         email,
         password,
-        passwordConfirm,
+        passwordConfirmation: passwordConfirm,
         name,
       });
+
+      // 회원가입 성공 시 로그인 페이지로 이동
       router.push('/login');
     } catch (error) {
-      console.error('회원가입 중 오류가 발생했습니다:', error);
+      // 에러 발생 시 처리
+      if (error instanceof Error) {
+        alert(error.message);
+        setErrorMessage(error.message);
+        console.log(errorMessage);
+      } else {
+        alert('회원가입 중 오류가 발생했습니다.');
+      }
     } finally {
       setIsSubmitting(false);
     }

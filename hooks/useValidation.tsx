@@ -22,18 +22,21 @@ export function useValidation({ type, compareValue }: UseValidationProps) {
 
     switch (type) {
       case 'email':
-        if (!/\S+@\S+\.\S+/.test(value)) {
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
           return '이메일 형식으로 작성해 주세요.';
         }
         break;
       case 'password':
-        if (value.length < 8) {
+        if (
+          !/^([a-z]|[A-Z]|[0-9]|[!@#$%^&*])+$/.test(value) ||
+          value.length < 8
+        ) {
           return '8자 이상 입력해주세요.';
         }
         break;
       case 'name':
-        if (value.length > 10) {
-          return '열 자 이하로 작성해주세요.';
+        if (value.length < 1 || value.length > 10) {
+          return '1자 이상 10자 이하로 작성해주세요.';
         }
         break;
       case 'passwordConfirm':
