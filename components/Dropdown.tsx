@@ -47,6 +47,8 @@ export default function Dropdown({
           src="/icon/icon-arrowdown.svg"
           className={`size-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
           alt="드롭다운 화살표"
+          width={7}
+          height={4}
         />
       </button>
 

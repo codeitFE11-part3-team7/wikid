@@ -24,7 +24,7 @@ export default function Menu({ options, onSelect, menuSize }: MenuProps) {
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') onSelect(option);
           }}
-          className={`w-auto cursor-pointer rounded-md px-3 py-2.5 hover:bg-green-100`}
+          className={`flex w-full cursor-pointer flex-col rounded-md px-3 py-2.5 hover:bg-green-100`}
         >
           {option}
         </button>
