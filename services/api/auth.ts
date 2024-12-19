@@ -2,15 +2,6 @@ import { AxiosError } from 'axios';
 
 import instance from '../../lib/axios-client';
 
-interface ErrorResponse {
-  message: string;
-  details?: {
-    [key: string]: {
-      message: string;
-    };
-  };
-}
-
 export const AuthAPI = {
   signup: async (data: {
     email: string;
