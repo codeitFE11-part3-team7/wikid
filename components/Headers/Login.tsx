@@ -111,6 +111,8 @@ export default function Login({
       </button>
     </div>
   ) : (
-    <button onClick={login}>로그인</button>
+    <button onClick={login} className="text-14 text-gray-400">
+      로그인
+    </button>
   );
 }

@@ -33,9 +33,9 @@ export default function BoardCard({
   return (
     <Link
       href={`/boards/${id}`}
-      className="block h-auto w-[250px] overflow-hidden rounded-custom shadow-custom dark:shadow-custom-dark ta:w-[302px]"
+      className="block h-auto w-[250px] overflow-hidden rounded-custom shadow-custom dark:shadow-custom-dark ta:w-full"
     >
-      <div className="relative h-[130px] w-auto overflow-hidden bg-gray-100">
+      <div className="relative h-[130px] w-auto overflow-hidden bg-gray-100 ta:h-[17.475vw]">
         <Image
           src={image === '' ? '/icon/icon-no-image.svg' : image}
           alt={`${title} 썸네일`}
