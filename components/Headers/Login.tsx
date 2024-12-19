@@ -74,6 +74,8 @@ export default function Login({
           src={profileImage || '/icon/icon-profile.svg'}
           className="mo:hidden"
           alt="프로필 아이콘"
+          width={32}
+          height={32}
         />
         <Image
           src="/icon/icon-menu.svg"
