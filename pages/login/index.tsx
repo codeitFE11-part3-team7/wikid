@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import Button from '@/components/Button';
 import InputField from '@/components/Input';
+import { AuthAPI } from '@/services/api/auth';
 
 function Login(): React.ReactElement {
   const [email, setEmail] = useState('');
@@ -38,13 +39,21 @@ function Login(): React.ReactElement {
 
     setIsSubmitting(true);
     try {
-      console.log('Form submitted:', {
+      const response = await AuthAPI.signin({
         email,
         password,
       });
-      router.push('/signUp');
+
+      if (response.accessToken) {
+        localStorage.setItem('accessToken', response.accessToken);
+        router.push('/');
+      }
     } catch (error) {
-      console.error('회원가입 중 오류가 발생했습니다:', error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     } finally {
       setIsSubmitting(false);
     }
