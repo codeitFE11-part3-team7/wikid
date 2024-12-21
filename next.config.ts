@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         hostname: 'via.placeholder.com',
       },
       {
+        protocol: 'http',
+        hostname: 'example.com',
+      },
+      {
         protocol: 'https',
         hostname: 'ifh.cc',
       },
