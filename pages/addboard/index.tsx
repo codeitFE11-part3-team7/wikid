@@ -1,9 +1,11 @@
 import instance from 'lib/axios-client';
 import Head from 'next/head';
-import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/router';
+import { FormEvent, useEffect, useState } from 'react';
 
 import Button from '@/components/Button';
 import TextEditor from '@/components/TextEditor';
+// import { AuthAPI } from '@/services/api/auth';
 
 // 제목 글자수 제한
 const MAX_TITLE = 30;
@@ -26,6 +28,7 @@ const formatDate = (date: string) => {
 export default function Addboard() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const router = useRouter();
 
   // 등록 버튼 비활성화
   const submitDisabled = title.length === 0 || content.length === 0;
@@ -36,28 +39,56 @@ export default function Addboard() {
 
   // 제목 input 콜백 함수
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log('handleChange:e:', e);
     setTitle(e.target.value);
   };
   // 내용 에디터 콜백 함수
   const handleContentChange = (value: string) => {
-    // console.log('value:', value);
     setContent(value);
   };
   // 작성 폼 서브밋 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // API 연결 및 처리
-    // TODO - 로그인 및 인증되면 그때 다시 테스트
-    instance
-      .post('/articles', {
-        image: '',
+
+    try {
+      const res = await instance.post('/articles', {
+        image: 'https://ifh.cc/g/V26MYS.png',
         content,
         title,
-      })
-      .then((res) => console.log('subtmi:res:', res))
-      .catch((err) => console.log('submit:err:', err));
+      });
+      if (res && res.status === 201) {
+        // TODO - 스낵바로 변경
+        alert('게시물이 등록되었습니다.');
+        router.push('/boards/' + res.data.id);
+      } else {
+        console.log('--- handleSubmit:res:', res);
+      }
+    } catch (error) {
+      console.error('--- handleSubmit:error:', error);
+    }
   };
+
+  useEffect(() => {
+    // 테스트용 로그인
+    // const testSignin = async () => {
+    //   const res = await AuthAPI.signin({
+    //     email: 'haksoo@email.com',
+    //     password: '1234qwer',
+    //   });
+    //   console.log('res:', res);
+    // };
+    // testSignin();
+
+    // 테스트용 사용자 정보 - 로그인 여부 확인
+    const testRes = async () => {
+      try {
+        const res = await instance.get('/users/me');
+        console.log('--- useEffect:res:', res);
+      } catch (error) {
+        console.error('--- useEffect:error:', error);
+      }
+    };
+    testRes();
+  }, []);
 
   return (
     <div className="min-h-svh">
@@ -66,7 +97,7 @@ export default function Addboard() {
       </Head>
 
       <main>
-        <div className="container pt-20 mo:px-0 mo:pt-[60px]">
+        <div className="container pb-5 pt-20 mo:px-0 mo:pt-[60px]">
           <div className="mb-5 mt-[54px] rounded-custom p-[30px] shadow-custom dark:shadow-custom-dark mo:mt-0 mo:px-5 mo:py-4 mo:shadow-none">
             <header className="my-4 flex items-center justify-between">
               <h1 className="mo:text-16sb ta:text-20sb pc:text-24sb">
@@ -115,7 +146,7 @@ export default function Addboard() {
                 {textContent.replaceAll(' ', '').length}자
               </p>
 
-              <div className="h-[520px] mo:h-[50vh] ta:h-[480px]">
+              <div className="h-[360px] mo:h-[50vh]">
                 <TextEditor value={content} onChange={handleContentChange} />
               </div>
             </form>
