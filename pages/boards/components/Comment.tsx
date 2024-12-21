@@ -9,7 +9,7 @@ interface CommentProps {
   name: string;
   content: string;
   date: string;
-  onclick: { update: () => void; delete: () => void };
+  onclick: { update: (value: string) => void; delete: () => void };
   isOwner: boolean;
 }
 
@@ -40,8 +40,9 @@ export default function Comment({
     setIsEditing(false);
   };
 
-  const handleSubmit = () => {
-    console.log('submit', value);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onclick.update(value);
     setIsEditing(false);
   };
 

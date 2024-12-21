@@ -9,7 +9,7 @@ interface BoardItemProps {
   title: string;
   name: string;
   likeCount: number;
-  updatedAt: string;
+  createdAt: string;
   className?: string;
 }
 
@@ -19,16 +19,16 @@ interface BoardItemProps {
  * @param {string} title - 게시글 제목
  * @param {string} name - 작성자 이름
  * @param {number} likeCount - 좋아요 수
- * @param {string} updatedAt - 업데이트 날짜
+ * @param {string} createdAt - 등록한 날짜
  * @param {string} className - 커스텀 클래스
- * @example <BoardItem id={1} title="게시글 제목" name="작성자" likeCount={10} updatedAt="2024-12-17T08:25:07.098Z" />
+ * @example <BoardItem id={1} title="게시글 제목" name="작성자" likeCount={10} createdAt="2024-12-17T08:25:07.098Z" />
  */
 export default function BoardItem({
   id,
   title,
   name,
   likeCount,
-  updatedAt,
+  createdAt,
   className,
 }: BoardItemProps) {
   const isMobile = useCheckMobile();
@@ -54,7 +54,7 @@ export default function BoardItem({
         <p className="mo:hidden">{likeCount}</p>
       )}
       <p className={`mo:order-3 mo:flex-1 ${textColors}`}>
-        {dateConversion(updatedAt)}
+        {dateConversion(createdAt)}
       </p>
     </Link>
   );
