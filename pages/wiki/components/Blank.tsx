@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import Button from '@/components/Button';
-import WikiQuizModal from '@/components/WikiQuizModal';
+import WikiQuizModal from '@/components/Modal/WikiQuizModal';
 
 interface BlankProps {
   onQuizSuccess: () => void;
   question: string;
-  answer: string;
+  code: string;
 }
 
 /**
@@ -16,7 +16,7 @@ interface BlankProps {
  * @param answer 퀴즈에 대한 답변
  */
 
-export default function Blank({ onQuizSuccess, question, answer }: BlankProps) {
+export default function Blank({ onQuizSuccess, question, code }: BlankProps) {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const onQuizClose = () => setIsQuizOpen(false);
 
@@ -32,7 +32,7 @@ export default function Blank({ onQuizSuccess, question, answer }: BlankProps) {
         isOpen={isQuizOpen}
         onClose={onQuizClose}
         securityQuestion={question}
-        securityAnswer={answer}
+        userCode={code}
         onQuizComplete={() => {
           onQuizSuccess();
           onQuizClose();

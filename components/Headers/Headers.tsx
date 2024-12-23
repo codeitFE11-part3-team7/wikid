@@ -8,7 +8,6 @@ import GNB from './GNB';
 import Login from './Login';
 
 export default function Headers() {
-  // TODO 임시 로그인 상태(추후 업데이트예정)
   const { isAuthenticated, profile } = useProfileContext();
   const isMobile = useCheckMobile();
 

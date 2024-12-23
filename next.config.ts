@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         hostname: 'via.placeholder.com',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'example.com',
       },
       {

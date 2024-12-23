@@ -43,7 +43,13 @@ module.exports = {
     'react/prop-types': 'off', // PropTypes 사용하지 않음
 
     // TypeScript 관련 규칙
-    '@typescript-eslint/no-unused-vars': ['error'], // 사용하지 않는 변수 에러 처리
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_', // _로 시작하는 변수는 무시
+        varsIgnorePattern: '^_', // _로 시작하는 변수는 무시
+      },
+    ], // 사용하지 않는 변수 에러 처리
     '@typescript-eslint/explicit-module-boundary-types': 'off', // 반환 타입 강제 비활성화
 
     'no-undef': 'error',

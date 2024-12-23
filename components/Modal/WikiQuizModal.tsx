@@ -13,9 +13,7 @@ interface WikiQuizModalProps {
   onClose: () => void;
   securityQuestion: string;
   userCode: string;
-  currentArticleWriterId: number;
   onQuizComplete: () => void;
-  onUserCompare: (isSame: boolean) => void;
 }
 
 interface QuizState {
@@ -29,9 +27,7 @@ function WikiQuizModal({
   onClose,
   securityQuestion,
   userCode,
-  currentArticleWriterId,
   onQuizComplete,
-  onUserCompare,
 }: WikiQuizModalProps) {
   const [state, setState] = useState<QuizState>({
     isCorrect: false,
@@ -99,9 +95,6 @@ function WikiQuizModal({
       const response = await instance.post(`/profiles/${userCode}/ping`, {
         securityAnswer: answer,
       });
-
-      const isSameUser = currentArticleWriterId === response.data.userId;
-      onUserCompare(isSameUser);
 
       return {
         registeredAt: response.data.registeredAt,

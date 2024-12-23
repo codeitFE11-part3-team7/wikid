@@ -28,6 +28,10 @@ export interface Profile {
   id: number;
 }
 
+interface UserProfileResponse {
+  profile: Profile;
+}
+
 interface ProfileContextType {
   isAuthenticated: boolean;
   profile: Profile | null;
@@ -41,17 +45,11 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [profile, setProfile] = useState<Profile | null>(null);
 
-  //accessToken이 있는지 확인 (로그인 여부)
-  const updateAuthStatus = () => {
-    const accessToken = localStorage.getItem('accessToken');
-    setIsAuthenticated(!!accessToken);
-  };
-
   //사용자 프로필 가져오기
   const getProfile = async () => {
     const accessToken = localStorage.getItem('accessToken');
     try {
-      const res = await instance.get('/users/me', {
+      const res = await instance.get<UserProfileResponse>('/users/me', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -59,7 +57,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
 
       const profileData = res.data.profile ?? null;
 
-      if (!profileData) {
+      if (profileData == null) {
         setProfile(null);
         return;
       }
@@ -71,7 +69,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         return;
       }
 
-      const profileRes = await instance.get(`/profiles/${code}`);
+      const profileRes = await instance.get<Profile>(`/profiles/${code}`);
 
       setProfile(profileRes.data);
     } catch {
@@ -79,35 +77,25 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  //초기 인증 상태 확인
-  useEffect(() => {
-    updateAuthStatus();
-  }, []);
-
-  //다른 탭에서 localStorage가 변경될때 인증 상태 업데이트
-  useEffect(() => {
-    window.addEventListener('storage', updateAuthStatus);
-
-    return () => {
-      window.removeEventListener('storage', updateAuthStatus);
-    };
-  }, []);
-
-  //accessToken이 변경되거나 삭제될때 인증 상태 업데이트
+  //인증 상태 업데이트
   useEffect(() => {
     const handleLocalStorageChange = () => {
       const accessToken = localStorage.getItem('accessToken');
-      setIsAuthenticated(!!accessToken);
 
-      if (accessToken) {
-        getProfile();
+      if (accessToken !== null) {
+        setIsAuthenticated(true);
+        getProfile().catch(() => {
+          console.error('프로필을 불러오던 중 에러가 발생했습니다.');
+          setProfile(null);
+        });
       } else {
+        setIsAuthenticated(false);
         setProfile(null);
       }
     };
 
-    const originalSetItem = localStorage.setItem;
-    const originalRemoveItem = localStorage.removeItem;
+    const originalSetItem = localStorage.setItem.bind(localStorage);
+    const originalRemoveItem = localStorage.removeItem.bind(localStorage);
 
     localStorage.setItem = (key: string, value: string) => {
       originalSetItem.call(localStorage, key, value);
