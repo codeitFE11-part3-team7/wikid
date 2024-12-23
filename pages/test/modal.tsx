@@ -6,13 +6,16 @@ import UnsavedChangesModal from '@/components/Modal/UnsavedChangesModal';
 import WikiQuizModal from '@/components/Modal/WikiQuizModal';
 
 const QUESTION = '특별히 싫어하는 음식은?';
-const ANSWER = '카레';
+const ID = 1943;
+const CODE = '89914bb4-9947-41e5-bba5-f0878c014fd1';
 
 function ModalTest() {
   const [isDMOpen, setIsDMOpen] = useState(false);
   const [isUCOpen, setIsUCOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isSameUser, setIsSameUser] = useState(false);
+
   const onUCClose = () => setIsUCOpen(false);
   const onDMClose = () => setIsDMOpen(false);
   const onQuizClose = () => setIsQuizOpen(false);
@@ -31,6 +34,11 @@ function ModalTest() {
   const handleQuizSuccess = () => {
     alert('퀴즈를 성공하셨습니다.');
     setIsQuizOpen(false);
+  };
+
+  const handleUserCompare = (isSame: boolean) => {
+    setIsSameUser(isSame);
+    console.log(isSameUser);
   };
 
   return (
@@ -59,6 +67,7 @@ function ModalTest() {
       >
         이미지 업로드
       </button>
+
       <DisconnectionModal
         confirmReset={confirmReset}
         isOpen={isDMOpen}
@@ -74,8 +83,10 @@ function ModalTest() {
         isOpen={isQuizOpen}
         onClose={onQuizClose}
         securityQuestion={QUESTION}
-        securityAnswer={ANSWER}
         onQuizComplete={handleQuizSuccess}
+        userCode={CODE}
+        currentArticleWriterId={ID}
+        onUserCompare={handleUserCompare}
       />
     </div>
   );

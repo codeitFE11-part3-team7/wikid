@@ -4,7 +4,7 @@ interface CommentFormProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCancel?: () => void;
-  onSubmit?: () => void;
+  onSubmit?: React.FormEventHandler;
   update?: boolean;
 }
 
@@ -31,7 +31,10 @@ export default function CommentForm({
   };
 
   return (
-    <form className="relative h-[133px] w-full rounded-custom bg-gray-100 px-[15px] py-[13px]">
+    <form
+      className="relative h-[133px] w-full rounded-custom bg-gray-100 px-[15px] py-[13px]"
+      onSubmit={onSubmit}
+    >
       <textarea
         className="mb-[2px] h-14 w-full resize-none bg-gray-100 text-14"
         value={value}
@@ -48,7 +51,7 @@ export default function CommentForm({
             취소
           </Button>
         )}
-        <Button onClick={onSubmit} disabled={value.length === 0}>
+        <Button type="submit" disabled={value.length === 0}>
           댓글 등록
         </Button>
       </div>

@@ -9,21 +9,49 @@ export default function Test() {
   const commonCellClass = 'border-r border-gray-300';
   const commonRowClass = 'flex flex-wrap items-end gap-2';
 
-  // ----snackBar(start)----
-  const [snackState, setSnackState] = useState<
-    'fail' | 'success' | 'info' | 'null'
-  >('null');
+  const [snackBarState, setSnackBarState] = useState<{
+    open: boolean;
+    severity: 'fail' | 'success' | 'info';
+    message: string;
+    autoHideDuration?: number;
+  }>({
+    open: false,
+    severity: 'info',
+    message: '',
+  });
 
-  const handleSuccess = () => {
-    setSnackState('success');
-    setTimeout(() => setSnackState('null'), 1500);
+  const handleErrorClick = () => {
+    setSnackBarState({
+      open: true,
+      severity: 'fail',
+      message: '에러가 발생했습니다.',
+      autoHideDuration: 3000,
+    });
   };
 
-  const handleFail = () => {
-    setSnackState('fail');
-    setTimeout(() => setSnackState('null'), 1500);
+  const handleSuccessClick = () => {
+    setSnackBarState({
+      open: true,
+      severity: 'success',
+      message: '성공적으로 처리되었습니다.',
+      autoHideDuration: 3000,
+    });
   };
-  // ----snackBar(end)----
+  const handleInfoClick = () => {
+    setSnackBarState({
+      open: true,
+      severity: 'info',
+      message: '안내 메세지 입니다.',
+      autoHideDuration: 3000,
+    });
+  };
+
+  const handleCloseSnackBar = () => {
+    setSnackBarState({
+      ...snackBarState,
+      open: false,
+    });
+  };
 
   //-----dropdown(start)-----
   const options = ['옵션1', '옵션2', '옵션3'];
@@ -82,10 +110,17 @@ export default function Test() {
           <tr className="border-b border-gray-300">
             <td className={commonCellClass}>SnackBar</td>
             <td className={commonRowClass}>
-              <SnackBar state="info" />
-              <Button onClick={handleSuccess}>복사</Button>
-              <Button onClick={handleFail}>에러</Button>
-              {snackState !== 'null' && <SnackBar state={snackState} />}
+              <SnackBar
+                severity={snackBarState.severity}
+                open={snackBarState.open}
+                onClose={handleCloseSnackBar}
+                autoHideDuration={snackBarState.autoHideDuration}
+              >
+                {snackBarState.message}
+              </SnackBar>
+              <Button onClick={handleInfoClick}>안내 메세지</Button>
+              <Button onClick={handleErrorClick}>에러 메세지</Button>
+              <Button onClick={handleSuccessClick}>완료 메세지</Button>
             </td>
           </tr>
           <tr className="border-b border-gray-300">

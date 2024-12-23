@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 import Button from '@/components/Button';
+import EditorViewer from '@/components/EditorViewer';
 import Heart from '@/components/Heart/Heart';
 import useCheckMobile from '@/hooks/useCheckMobile';
+import instance from '@/lib/axios-client';
 import dateConversion from '@/utils/dateConversion';
 
 import ButtonIcon from './ButtonIcon';
@@ -11,9 +13,11 @@ import ButtonIcon from './ButtonIcon';
 interface BoardDetailCardProps {
   title: string;
   name: string;
+  createdAt: string;
   updatedAt: string;
   likeCount: number;
   content: string;
+  image: string;
   isOwner: boolean;
 }
 
@@ -21,35 +25,41 @@ interface BoardDetailCardProps {
  * 게시글 상세보기 카드 컴포넌트
  * @param {string} title - 제목
  * @param {string} props.name - 작성자 이름
- *  @param {string} props.updatedAt - 작성일
+ * @param {string} props.createdAt - 작성일
+ * @param {string} props.updatedAt - 수정일
  * @param {number} props.likeCount - 좋아요 수
  * @param {string} props.content - 내용
+ * @param {string} props.image - 이미지
+ * @param {boolean} props.isOwner - 작성자 여부
+ *
  */
 export default function BoardDetailCard({
   title,
   name,
+  createdAt,
   updatedAt,
   likeCount,
   content,
   isOwner,
+  image,
 }: BoardDetailCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
-
   const isMobile = useCheckMobile();
   const router = useRouter();
   const { articleId } = router.query;
 
-  useEffect(() => {
-    // TODO: 좋아요 여부 API 연동
-    console.log(`좋아요 여부 : ${isLiked}`);
-  }, [isLiked]);
-
-  const handleLikeClick = () => {
-    setIsLiked((prev) => !prev);
-  };
-
+  // 수정하기 버튼 클릭 시 수정 페이지 이동
   const handleUpdateClick = () => {
     router.push(`/updateboard/${articleId}`);
+  };
+
+  // 삭제하기 버튼 클릭 시 게시글 삭제
+  const handleDeleteClick = async () => {
+    try {
+      await instance.delete(`/articles/${articleId}`);
+      router.push('/boards');
+    } catch (error) {
+      console.error('게시글을 삭제하지 못했습니다.', error);
+    }
   };
 
   return (
@@ -61,34 +71,38 @@ export default function BoardDetailCard({
             (!isMobile ? (
               <>
                 <Button onClick={handleUpdateClick}>수정하기</Button>
-                {/* TODO - api 연동 시 수정 */}
-                <Button onClick={() => console.log('삭제요청api')}>
+                <Button onClick={handleDeleteClick} variant="danger">
                   삭제하기
                 </Button>
               </>
             ) : (
               <>
-                {/* TODO - api 연동 시 수정 */}
-                <ButtonIcon
-                  onClick={() => console.log('수정하기')}
-                  type="write"
-                />
-                {/* TODO - api 연동 시 수정 */}
-                <ButtonIcon
-                  onClick={() => console.log('삭제하기')}
-                  type="delete"
-                />
+                <ButtonIcon onClick={handleUpdateClick} type="write" />
+                <ButtonIcon onClick={handleDeleteClick} type="delete" />
               </>
             ))}
         </div>
         <div className="flex items-center gap-[10px] text-14 text-gray-400 mo:text-12">
           <span>{name}</span>
-          <span className="flex-1">{dateConversion(updatedAt)}</span>
-          <Heart initialCount={likeCount} onClick={handleLikeClick} />
+          <span>등록일 : {dateConversion(createdAt)}</span>
+          <span>|</span>
+          <span className="flex-1">
+            최근 수정일 : {dateConversion(updatedAt)}
+          </span>
+          <Heart initialCount={likeCount} />
         </div>
       </header>
 
-      <div>{content}</div>
+      <div>
+        <Image
+          src={image}
+          alt="게시글 이미지"
+          width={500}
+          height={300}
+          className="mb-5 mo:mb-[15px] mo:max-h-[177px] mo:max-w-[295px]"
+        />
+        <EditorViewer content={content} />
+      </div>
     </div>
   );
 }

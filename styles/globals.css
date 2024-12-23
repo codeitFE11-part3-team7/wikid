@@ -83,3 +83,61 @@ body {
     color: var(--gray-400);
   }
 }
+
+.contentStyle h1 {
+  @apply text-3xl;
+}
+.contentStyle h2 {
+  @apply text-2xl;
+}
+.contentStyle h3 {
+  @apply text-xl;
+}
+.contentStyle h1,
+.contentStyle h2,
+.contentStyle h3 {
+  @apply my-4 font-bold;
+}
+.contentStyle h1,
+.contentStyle h2 {
+  @apply border-b border-gray-200;
+}
+
+.contentStyle p {
+  @apply my-2;
+}
+
+.contentStyle ul,
+.contentStyle ol {
+  @apply my-2 list-inside;
+}
+
+.contentStyle ul {
+  @apply list-disc;
+}
+
+.contentStyle ol {
+  @apply list-decimal;
+}
+
+.contentStyle a {
+  @apply text-blue-500 underline;
+}
+
+.contentStyle blockquote {
+  @apply my-4 border-l-4 border-green-200 pl-4 italic;
+}
+
+.contentStyle pre {
+  @apply my-4 rounded bg-gray-100 p-4;
+}
+
+.contentStyle code {
+  @apply rounded bg-gray-100 px-1;
+}
+.contentStyle .ql-align-center {
+  @apply text-center;
+}
+.contentStyle .ql-align-right {
+  @apply text-right;
+}

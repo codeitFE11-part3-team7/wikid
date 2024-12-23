@@ -7,7 +7,7 @@ interface BoardItemData {
     name: string;
   };
   likeCount: number;
-  updatedAt: string;
+  createdAt: string;
 }
 
 interface BoardListProps {
@@ -39,7 +39,7 @@ export default function BoardList({ data }: BoardListProps) {
           title={item.title}
           name={item.writer.name}
           likeCount={item.likeCount}
-          updatedAt={item.updatedAt}
+          createdAt={item.createdAt}
           className={`${tableStyles} mo:flex`}
         />
       ))}
