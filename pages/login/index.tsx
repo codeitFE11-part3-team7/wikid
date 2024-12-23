@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@/components/Button';
 import InputField from '@/components/Input';
@@ -9,9 +9,7 @@ import { AuthAPI } from '@/services/api/auth';
 function Login(): React.ReactElement {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [validFields, setValidFields] = useState({
     email: false,
     password: false,
@@ -33,33 +31,31 @@ function Login(): React.ReactElement {
     }));
   };
 
+  const isFormValid = validFields.email && validFields.password;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting || !isFormValid) return;
 
     setIsSubmitting(true);
     try {
-      const response = await AuthAPI.signin({
+      const response = (await AuthAPI.signin({
         email,
         password,
-      });
+      })) as { accessToken: string };
 
-      if (response.accessToken) {
-        localStorage.setItem('accessToken', response.accessToken);
-        router.push('/');
-      }
+      localStorage.setItem('accessToken', response.accessToken);
+      await router.push('/');
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
       } else {
-        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+        alert('로그인 중 오류가 발생했습니다.');
       }
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const isFormValid = Object.values(validFields).every(Boolean);
 
   return (
     <div className="flex min-h-screen justify-center pt-[233px] mo:pt-[203px]">

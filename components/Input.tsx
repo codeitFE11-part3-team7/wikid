@@ -37,7 +37,12 @@ function InputField({
   const [showDayPicker, setShowDayPicker] = useState(false);
 
   const handleFocus = () => {
-    if (layout === 'horizontal' && label === '생일') {
+    if (
+      typeof layout === 'string' &&
+      layout === 'horizontal' &&
+      typeof label === 'string' &&
+      label === '생일'
+    ) {
       setShowDayPicker(true);
     }
   };
@@ -47,17 +52,27 @@ function InputField({
   };
 
   const handleBlur = () => {
-    if (layout === 'vertical') {
+    if (typeof layout === 'string' && layout === 'vertical') {
       const error = validate(value);
-      onValidation?.(!error && value.length > 0);
+      const isValid = !error && typeof value === 'string' && value.length > 0;
+      onValidation?.(isValid);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
-    if (layout === 'vertical' && errorMessage) {
+    if (
+      typeof layout === 'string' &&
+      layout === 'vertical' &&
+      typeof errorMessage === 'string' &&
+      errorMessage.length > 0
+    ) {
       const error = validate(e.target.value);
-      onValidation?.(!error && e.target.value.length > 0);
+      const isValid =
+        !error &&
+        typeof e.target.value === 'string' &&
+        e.target.value.length > 0;
+      onValidation?.(isValid);
     }
   };
 
@@ -84,12 +99,15 @@ function InputField({
   };
 
   const labelClass =
-    layout === 'horizontal'
+    typeof layout === 'string' && layout === 'horizontal'
       ? variantClass.labelHorizontal
       : variantClass.labelVertical;
 
   const inputClass = `${variantClass.base} ${
-    layout === 'vertical' && errorMessage
+    typeof layout === 'string' &&
+    layout === 'vertical' &&
+    typeof errorMessage === 'string' &&
+    errorMessage.length > 0
       ? variantClass.error
       : variantClass.normal
   }`;
@@ -97,13 +115,17 @@ function InputField({
   return (
     <div
       className={
-        layout === 'horizontal'
+        typeof layout === 'string' && layout === 'horizontal'
           ? `${variantClass.containerHorizontal} relative`
           : `${variantClass.containerVertical} relative`
       }
-      style={width ? { width } : undefined}
+      style={
+        typeof width === 'string' && width.length > 0 ? { width } : undefined
+      }
     >
-      {label && <label className={labelClass}>{label}</label>}
+      {typeof label === 'string' && label.length > 0 && (
+        <label className={labelClass}>{label}</label>
+      )}
       <input
         type={getInputType()}
         value={value}
@@ -115,10 +137,13 @@ function InputField({
         ref={ref}
         {...props}
       />
-      {layout === 'vertical' && errorMessage && (
-        <span className={variantClass.errorText}>{errorMessage}</span>
-      )}
-      {showDayPicker && (
+      {typeof layout === 'string' &&
+        layout === 'vertical' &&
+        typeof errorMessage === 'string' &&
+        errorMessage.length > 0 && (
+          <span className={variantClass.errorText}>{errorMessage}</span>
+        )}
+      {typeof showDayPicker === 'boolean' && showDayPicker && (
         <div className="absolute left-0 top-full z-50 mt-2 rounded bg-white p-4 shadow-md">
           <div>
             <CustomDayPicker />

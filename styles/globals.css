@@ -22,11 +22,14 @@
   --purple-100: #8e66ff;
 
   --yellow-100: #fdd181;
+
+  --blue-50: #f1f4fd;
+  --blue-100: #ecf0fa;
 }
 
 .dark {
   --background: #121212;
-  --white: #e4e4e4;
+  --white: #2c2c2c;
   --gray-100: #3b415b;
   --gray-200: #474d66;
   --gray-300: #8f95b2;
@@ -44,6 +47,9 @@
   --purple-100: #b095ff;
 
   --yellow-100: #e7a832;
+
+  --blue-50: #1a1f2e;
+  --blue-100: #1a1f2e;
 }
 
 body {

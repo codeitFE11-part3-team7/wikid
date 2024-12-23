@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import Button from '@/components/Button';
 import InputField from '@/components/Input';
@@ -58,7 +58,7 @@ function MyPage(): React.ReactElement {
     setAnswer(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -73,12 +73,10 @@ function MyPage(): React.ReactElement {
       });
 
       // 성공 시 로그인 페이지로 이동
-      router.push('/login');
+      await router.push('/login');
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
-      } else {
-        setError('비밀번호가 일치하지 않습니다.');
       }
     } finally {
       setIsSubmitting(false);
@@ -86,7 +84,7 @@ function MyPage(): React.ReactElement {
   };
 
   // 위키 생성 제출
-  const handleWikiSubmit = async (e: React.FormEvent) => {
+  const handleWikiSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -101,7 +99,7 @@ function MyPage(): React.ReactElement {
       });
 
       // 성공 시 위키 목록 페이지로 이동
-      router.push('/wiki/{code}');
+      await router.push('/wiki/{code}');
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -110,16 +108,39 @@ function MyPage(): React.ReactElement {
       setIsSubmitting(false);
     }
   };
-  // 비밀번호 변경 폼 유효성 검사
-  const isPasswordFormValid =
-    currentPassword &&
-    newPassword &&
-    newPasswordConfirm &&
-    !currentPasswordValidation.errorMessage &&
-    !newPasswordValidation.errorMessage &&
-    !newPasswordConfirmValidation.errorMessage;
 
-  const isWikiFormValid = question.trim() !== '' && answer.trim() !== '';
+  // 비밀번호 변경 폼 유효성 검사
+  const isPasswordFormValid = Boolean(
+    currentPassword !== null &&
+      currentPassword !== undefined &&
+      typeof currentPassword === 'string' &&
+      currentPassword.length > 0 &&
+      newPassword !== null &&
+      newPassword !== undefined &&
+      typeof newPassword === 'string' &&
+      newPassword.length > 0 &&
+      newPasswordConfirm !== null &&
+      newPasswordConfirm !== undefined &&
+      typeof newPasswordConfirm === 'string' &&
+      newPasswordConfirm.length > 0 &&
+      typeof currentPasswordValidation?.errorMessage === 'string' &&
+      currentPasswordValidation.errorMessage.length === 0 &&
+      typeof newPasswordValidation?.errorMessage === 'string' &&
+      newPasswordValidation.errorMessage.length === 0 &&
+      typeof newPasswordConfirmValidation?.errorMessage === 'string' &&
+      newPasswordConfirmValidation.errorMessage.length === 0
+  );
+
+  const isWikiFormValid = Boolean(
+    question !== null &&
+      question !== undefined &&
+      typeof question === 'string' &&
+      question.length > 0 &&
+      answer !== null &&
+      answer !== undefined &&
+      typeof answer === 'string' &&
+      answer.length > 0
+  );
 
   const inputSectionStyle = 'flex w-full flex-col items-center gap-[8px]';
   const inputContainerStyle = 'flex w-full flex-col gap-[8px]';
@@ -161,7 +182,7 @@ function MyPage(): React.ReactElement {
               <Button
                 type="submit"
                 disabled={!isPasswordFormValid}
-                isLoading={isSubmitting}
+                isLoading={Boolean(isSubmitting)}
                 variant="primary"
                 size="small"
                 className="mt-[8px] self-end"
@@ -193,7 +214,7 @@ function MyPage(): React.ReactElement {
               <Button
                 type="submit"
                 disabled={!isWikiFormValid}
-                isLoading={isSubmitting}
+                isLoading={Boolean(isSubmitting)}
                 variant="primary"
                 size="small"
                 className="mt-[8px] self-end"

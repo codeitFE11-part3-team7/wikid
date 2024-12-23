@@ -44,6 +44,10 @@ export default {
         yellow: {
           100: 'var(--yellow-100)',
         },
+        blue: {
+          50: 'var(--blue-50)',
+          100: 'var(--blue-100)',
+        },
       },
       fontFamily: {
         sans: [

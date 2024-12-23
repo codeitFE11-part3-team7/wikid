@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@/components/Button';
 import InputField from '@/components/Input';
@@ -61,7 +61,7 @@ function SignUp() {
       });
 
       // 회원가입 성공 시 로그인 페이지로 이동
-      router.push('/login');
+      await router.push('/login');
     } catch (error) {
       // 에러 발생 시 처리
       if (error instanceof Error) {

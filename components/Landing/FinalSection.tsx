@@ -1,24 +1,37 @@
+import { useProfileContext } from 'context/ProfileContext';
+import { useRouter } from 'next/router';
+
 import Button from '@/components/Button';
 
-const styles = {
-  section:
-    "relative flex flex-col items-center justify-center overflow-hidden bg-gray-500 py-[200px] font-['NEXON_Lv1_Gothic_Low'] ta:py-[160px] mo:py-[100px]",
-  title: 'text-[60px] font-bold leading-none text-white mo:text-[30px]',
-  button: 'mt-[40px] mo:h-[54px] mo:w-[169px]',
-  imageWrapper: 'relative mt-[54px]',
-  image: 'h-auto w-full object-contain',
-};
+function FinalSection() {
+  const router = useRouter();
+  const { isAuthenticated, profile } = useProfileContext();
 
-export default function FinalSection() {
+  const handleButtonClick = async () => {
+    try {
+      if (!isAuthenticated) {
+        await router.push('/login');
+      } else if (!profile) {
+        await router.push('/mypage');
+      } else {
+        await router.push(profile.code ? `/wiki/${profile.code}` : '/wiki');
+      }
+    } catch (error) {
+      console.error('Navigation failed:', error);
+    }
+  };
+
   return (
-    <section className={styles.section}>
+    <section className="relative flex flex-col items-center justify-center overflow-hidden bg-gray-500 py-[200px] font-['NEXON_Lv1_Gothic_Low'] mo:py-[100px] ta:py-[160px]">
       <div className="flex h-full flex-col items-center justify-center">
-        <h2 className={styles.title}>나만의 위키 만들어 보기</h2>
+        <h2 className="text-[60px] font-bold leading-none text-white mo:text-[30px]">
+          나만의 위키 만들어 보기
+        </h2>
         <Button
-          href="/signup"
+          onClick={handleButtonClick}
           variant="light"
           size="large"
-          className={styles.button}
+          className="mt-[40px] mo:h-[54px] mo:w-[169px]"
         >
           지금 시작하기
         </Button>
@@ -26,3 +39,5 @@ export default function FinalSection() {
     </section>
   );
 }
+
+export default FinalSection;
