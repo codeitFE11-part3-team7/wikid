@@ -4,6 +4,7 @@ import Button from '@/components/Button';
 import LinkBar from '@/components/LinkBar';
 import UnsavedChangesModal from '@/components/Modal/UnsavedChangesModal';
 import SnackBar from '@/components/SnackBar';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface ContentHeaderProps {
   name: string;
@@ -41,39 +42,17 @@ export default function ContentHeader({
   saveContent,
 }: ContentHeaderProps) {
   const [isUCOpen, setIsUCOpen] = useState(false);
-  const [linkSnackBarState, setLinkSnackBarState] = useState<{
-    open: boolean;
-    severity: 'fail' | 'success' | 'info';
-    message: string;
-    autoHideDuration?: number;
-  }>({
-    open: false,
-    severity: 'success',
-    message: '',
-  });
-
-  const [infoSnackBarState, setInfoSnackBarState] = useState<{
-    open: boolean;
-    severity: 'fail' | 'success' | 'info';
-    message: string;
-    autoHideDuration?: number;
-  }>({
-    open: true,
-    severity: 'info',
-    message: '',
-    autoHideDuration: 300000,
-  });
+  const { snackBarValues, snackBarOpen } = useSnackBar();
+  const { snackBarValues: snackBarValues2, snackBarOpen: snackBarOpen2 } =
+    useSnackBar();
 
   useEffect(() => {
     const infoSnackBarMessage = diffTime
       ? `${Math.floor(5 - diffTime / 60 / 1000)}분 후 위키 참여가 가능합니다.`
       : '';
 
-    setInfoSnackBarState((prevState) => ({
-      ...prevState,
-      message: infoSnackBarMessage,
-    }));
-  }, [diffTime]);
+    snackBarOpen2('info', infoSnackBarMessage, () => {}, 300000);
+  }, [diffTime, snackBarOpen2]);
 
   const onUCClose = () => {
     setIsUCOpen(false);
@@ -88,30 +67,11 @@ export default function ContentHeader({
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        setLinkSnackBarState({
-          open: true,
-          severity: 'success',
-          message: '클립보드에 복사되었습니다.',
-          autoHideDuration: 1500,
-        });
+        snackBarOpen('success', '링크가 복사되었습니다.');
       })
       .catch(() => {
         alert('링크 복사에 실패했습니다.');
       });
-  };
-
-  const handleCloseLinkSnackBar = () => {
-    setLinkSnackBarState({
-      ...linkSnackBarState,
-      open: false,
-    });
-  };
-
-  const handleCloseInfoSnackBar = () => {
-    setInfoSnackBarState({
-      ...infoSnackBarState,
-      open: false,
-    });
   };
 
   return (
@@ -143,22 +103,22 @@ export default function ContentHeader({
       )}
       {isInfoSnackBarOpen && (
         <SnackBar
-          severity={infoSnackBarState.severity}
-          open={infoSnackBarState.open}
-          onClose={handleCloseInfoSnackBar}
-          autoHideDuration={infoSnackBarState.autoHideDuration}
+          severity={snackBarValues2.severity}
+          open={snackBarValues2.open}
+          onClose={snackBarValues2.onClose}
+          autoHideDuration={snackBarValues2.autoHideDuration}
         >
-          {infoSnackBarState.message}
+          {snackBarValues2.children}
         </SnackBar>
       )}
 
       <SnackBar
-        severity={linkSnackBarState.severity}
-        open={linkSnackBarState.open}
-        onClose={handleCloseLinkSnackBar}
-        autoHideDuration={linkSnackBarState.autoHideDuration}
+        severity={snackBarValues.severity}
+        open={snackBarValues.open}
+        onClose={snackBarValues.onClose}
+        autoHideDuration={snackBarValues.autoHideDuration}
       >
-        {linkSnackBarState.message}
+        {snackBarValues.children}
       </SnackBar>
     </div>
   );
