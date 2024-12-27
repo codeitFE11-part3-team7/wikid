@@ -13,7 +13,7 @@ import Blank from './Blank';
 import ContentHeader from './ContentHeader';
 import { useProfileContext } from '@/hooks/useProfileContext';
 import SnackBar from '../SnackBar';
-import useSnackBar from '@/hooks/useSanckBar';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface ProfileProps {
   profile: ProfileAnswer;

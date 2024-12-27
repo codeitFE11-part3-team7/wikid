@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Button from '../Button';
 import Modal from './Modal';
 import SnackBar from '../SnackBar';
-import useSnackBar from '@/hooks/useSanckBar';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface ImageUploadModalProps {
   imageFile?: File | null;

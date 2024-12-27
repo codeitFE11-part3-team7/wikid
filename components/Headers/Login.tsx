@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Profile } from 'types/profile';
 
 import Menu from '../Menu';
-import useSnackBar from '@/hooks/useSanckBar';
+import useSnackBar from '@/hooks/useSnackBar';
 import SnackBar from '../SnackBar';
 
 interface LoginProps {

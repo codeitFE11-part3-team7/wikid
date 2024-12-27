@@ -9,7 +9,7 @@ import EmptyList from '@/components/EmptyList';
 import ListItem from '@/components/wikiList.page/ListItem';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchInput from '@/components/SearchInput';
-import useSnackBar from '@/hooks/useSanckBar';
+import useSnackBar from '@/hooks/useSnackBar';
 import SnackBar from '@/components/SnackBar';
 import FullCoverSpinner from '@/components/FullCoverSpinner';
 
